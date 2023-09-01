@@ -1,11 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+
+
+
+
+
+
+
+
+
+
+
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
       <StatusBar style="auto" />
+      <Text style={styles.title}>Welcome</Text>
+      <Text style={styles.belt}>Let's journey through the solar system together!</Text>
+      <Text style={styles.belt}>Click the button below to embark!</Text>
+      <TouchableOpacity style={styles.button}>
+        <Text>Continue</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -13,8 +29,26 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  title: {
+    color: 'white',
+    maxWidth: '85%',
+    alignContent: 'center',
+    textAlign: 'center',
+    fontSize: 50,
+  },
+  belt: {
+    color: 'white',
+    textAlign: 'center',
+    opacity: 0.65,
+  },
+  button: {
+    backgroundColor: '#d23',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 25,
+  }
 });
