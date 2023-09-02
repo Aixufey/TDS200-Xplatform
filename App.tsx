@@ -1,15 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-import AdvancedTypeMapping from './laboratory/lab2/medium/AdvancedTypeMapping';
+
+
+import { CustomButton as BTN } from './laboratory/lab2/medium/AdvancedReactNativeComponent';
 
 
 
 
-
-
-
-
+const handlePress = () => {
+  alert('Pressed!');
+}
 
 
 export default function App() {
@@ -22,6 +23,11 @@ export default function App() {
       <TouchableOpacity style={styles.button}>
         <Text>Continue</Text>
       </TouchableOpacity>
+      <BTN
+        label='Continue'
+        onPress={handlePress}
+        style={styles.button}
+      />
     </View>
   );
 }
