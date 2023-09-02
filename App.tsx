@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-
+import AdvancedTypeMapping from './laboratory/lab2/medium/AdvancedTypeMapping';
 
 
 
