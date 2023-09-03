@@ -7,8 +7,8 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { CustomButton as BTN } from './laboratory/lab2/medium/AdvancedReactNativeComponent';
 import useAuthContext from "./hooks/useAuthContext";
-
-
+import Counter1 from "./components/Counter1";
+import Counter2 from "./components/Counter2";
 
 
 
@@ -38,6 +38,8 @@ export default function () {
                 onPress={handlePress}
                 style={styles.button}
             />
+            {/* <Counter1 /> */}
+            <Counter2 />
         </View>
     )
 };
