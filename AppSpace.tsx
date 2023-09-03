@@ -38,7 +38,7 @@ export default function () {
                 onPress={handlePress}
                 style={styles.button}
             />
-            {/* <Counter1 /> */}
+            <Counter1 />
             <Counter2 />
         </View>
     )

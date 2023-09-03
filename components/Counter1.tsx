@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { Pressable, View, Text } from "react-native";
+import HOC from "../laboratory/lab2/hard/HOC";
 
 
 
@@ -7,13 +7,11 @@ import { Pressable, View, Text } from "react-native";
 
 
 
-
-
-function Counter1() {
-    const [counter, setCounter] = useState<number>(0)
-    const handlePress = () => {
-        setCounter(counter + 1)
-    }
+type OGComponentProps = {
+    counter?: number,
+    handlePress?: () => void
+}
+const Counter1: React.FC<OGComponentProps> = ({ counter, handlePress}) => {
     return (
         <View style={{
             width: 200,
@@ -31,4 +29,4 @@ function Counter1() {
     )
 }
 
-export default Counter1
+export default HOC(Counter1)
