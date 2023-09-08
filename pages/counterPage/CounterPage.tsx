@@ -4,7 +4,7 @@ import {
     Text,
     TouchableOpacity,
 } from 'react-native'
-import { useState } from 'react';
+import useCounter from './useCounter';
 
 
 
@@ -12,20 +12,20 @@ import { useState } from 'react';
 
 
 const CounterPage: React.FC = () => {
-
-    const [count, setCount] = useState<number>(0)
-
-    const handleClick = () => {
-        setCount(count + 1)
-    }
+    // useCounter is a custom hook that returns count, increment and decrement
+    const { count, decrement, increment } = useCounter();
 
     return (
         <View style={{ flexGrow: 1, flexShrink: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>This is a counter page</Text>
             <Text>{count}</Text>
-            <TouchableOpacity style={{marginTop: 20}} onPress={handleClick}>
-                <Text>Click Me</Text>
+            <TouchableOpacity style={{ marginTop: 20 }} onPress={increment}>
+                <Text>Increment</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={{ marginTop: 20 }} onPress={decrement}>
+                <Text>Decrement</Text>
+            </TouchableOpacity>
+
         </View>
     )
 }
