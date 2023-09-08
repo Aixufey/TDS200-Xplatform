@@ -1,5 +1,5 @@
 import { Pressable, View, Text } from "react-native";
-import HOC from "../laboratory/lab2/hard/HOC";
+import HOC from "../../laboratory/lab2/hard/HOC";
 
 
 

@@ -8,9 +8,10 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { CustomButton as BTN } from './laboratory/lab2/medium/AdvancedReactNativeComponent';
 import useAuthContext from "./hooks/useAuthContext";
-import Counter1 from "./components/Counter1";
-import Counter2 from "./components/Counter2";
+/* import Counter1 from "./components/Counter/Counter1";
+import Counter2 from "./components/Counter/Counter2"; */
 import { useFetchPokemonByName } from "./laboratory/lab2/hard/Oppgave5";
+import { Counter1, Counter2 } from "./components";
 
 
 
