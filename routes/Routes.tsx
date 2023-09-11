@@ -4,7 +4,7 @@ import {
     View,
     Text,
 } from "react-native"
-import { BasicFormPage, CounterPage, NotePage } from "../pages";
+import { BasicFormPage, CounterPage, CurrencyPage, NotePage } from "../pages";
 import AppSpace from "../AppSpace";
 
 
@@ -13,7 +13,8 @@ import AppSpace from "../AppSpace";
 const Tab = createBottomTabNavigator();
 const Routes: React.FC = () => {
     return (
-        <Tab.Navigator initialRouteName="NotePage" screenOptions={{ headerShown: false }}>
+        <Tab.Navigator initialRouteName="CurrencyPage" screenOptions={{ headerShown: false }}>
+            <Tab.Screen name="CurrencyPage" component={CurrencyPage} />
             <Tab.Screen name="NotePage" component={NotePage} />
             <Tab.Screen name="CounterPage" component={CounterPage} />
             <Tab.Screen name="AppSpace" component={AppSpace} />

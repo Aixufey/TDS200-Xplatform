@@ -2,3 +2,4 @@
 export * from './counterPage'
 export * from './formPage'
 export * from './notePage'
+export * from './currencyPage'
