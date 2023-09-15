@@ -2,6 +2,7 @@ import React from "react";
 
 import { Text, View } from "react-native";
 import WelcomeRoutes from "./src/Routes";
+import Welcome from "./src/pages/Welcome";
 import {
   useFonts,
   Roboto_700Bold,
@@ -16,16 +17,16 @@ export default function App() {
     Roboto_400Regular
   });
 
-  /* if (!fontsLoaded) {
+  if (!fontsLoaded) {
     return null
-  } */
+  }
 
-  /* return <WelcomeRoutes /> */
-  return (
+  return <WelcomeRoutes />
+  /* return (
     <View style={{ flexGrow: 1, flexShrink: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button title="sdfsdfsfsdfs" Icon={() => <></>} onPress={logBtn}></Button>
+      <Button title="Continue" Icon={() => <></>} onPress={logBtn}></Button>
     </View>
-  )
+  ) */
 
 }
 
