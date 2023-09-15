@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SafeAreaView, Text, StyleSheet, View, TextInput, Pressable, TouchableOpacity } from "react-native";
+import useOwnNavigation from "../../hooks/useCustomNavigation"
 
 
 
@@ -12,6 +13,7 @@ let rates = [
 
 
 const CurrencyPage: React.FC = () => {
+    const {navigate} = useOwnNavigation();
     const [amount, setAmount] = useState<string>("")
     const [from, setFrom] = useState<string>("")
     const [to, setTo] = useState<string>("")
@@ -28,6 +30,11 @@ const CurrencyPage: React.FC = () => {
         console.log(to);
         setTo(txt)
     }
+
+    const handleNavigateToNote = () => {
+        navigate("NotePage")
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -64,12 +71,20 @@ const CurrencyPage: React.FC = () => {
                 </View>
             </View>
             <View style={styles.fieldContainer}>
-                <Text style={styles.text}>{amount} {from} {from ? '=': ''}</Text>
+                <Text style={styles.text}>{amount} {from} {from ? '=' : ''}</Text>
                 <Text>{to}</Text>
             </View>
             <View style={styles.fieldContainer}>
-                <TouchableOpacity style={styles.btnStyle}>
-                    <Text style={{ color: 'linen', fontWeight: 'bold', fontSize: 28, fontFamily: 'American Typewriter' }}>Convert</Text>
+                <TouchableOpacity
+                    style={styles.btnStyle}
+                    onPress={handleNavigateToNote}>
+                    <Text
+                        style={{
+                            color: 'linen',
+                            fontWeight: 'bold',
+                            fontSize: 28,
+                            fontFamily: 'American Typewriter'
+                        }}>Go to NoteApp</Text>
                 </TouchableOpacity>
             </View>
 
