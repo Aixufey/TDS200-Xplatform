@@ -2,17 +2,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-svg';
+import HomePage from '../pages/HomePage';
 
 
-const HomePage: React.FC = () => {
-    return (
-        <View>
-            <Text>
-                Hello from Start
-            </Text>
-        </View>
-    )
-}
+
 
     
     const Tab = createBottomTabNavigator();
