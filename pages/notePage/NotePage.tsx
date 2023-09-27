@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StickyItem } from "../../components/note";
 import { FlatList, View, Text, StyleSheet, Pressable, Button } from "react-native";
-
+import * as Crypto from 'expo-crypto';
 
 
 type dummyType = {
@@ -11,9 +11,9 @@ type dummyType = {
 }
 const NotePage = () => {
     let dummy: dummyType[] = [
-        { id: crypto.randomUUID().slice(4) },
-        { id: crypto.randomUUID().slice(4) },
-        { id: crypto.randomUUID().slice(4) },
+        { id: Crypto.randomUUID().slice(4) },
+        { id: Crypto.randomUUID().slice(4) },
+        { id: Crypto.randomUUID().slice(4) },
     ]
 
     const [data, setData] = useState<dummyType[]>(dummy);
@@ -21,7 +21,7 @@ const NotePage = () => {
 
     const handleAddNote = () => {
         const newNote: dummyType =
-            { id: crypto.randomUUID().slice(4) }
+            { id: Crypto.randomUUID().slice(4) }
         setData([...data, newNote])
     }
 
