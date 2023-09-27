@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StickyItem } from "../../components/note";
-import { FlatList, View, Text, StyleSheet, Pressable, Button } from "react-native";
+import { FlatList, View, Text, StyleSheet, Pressable, Button, SafeAreaView } from "react-native";
 import * as Crypto from 'expo-crypto';
 
 
@@ -11,6 +11,8 @@ type dummyType = {
 }
 const NotePage = () => {
     let dummy: dummyType[] = [
+        { id: Crypto.randomUUID().slice(4) },
+        { id: Crypto.randomUUID().slice(4) },
         { id: Crypto.randomUUID().slice(4) },
         { id: Crypto.randomUUID().slice(4) },
         { id: Crypto.randomUUID().slice(4) },
@@ -30,7 +32,7 @@ const NotePage = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <FlatList
                 data={data}
                 keyExtractor={item => item.id}
@@ -88,7 +90,7 @@ const NotePage = () => {
                     </Text>
                 </Pressable>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -100,10 +102,8 @@ const styles = StyleSheet.create({
         backgroundColor: "linen"
     },
     flatListContainer: {
-        flex: 1,
         gap: 10,
-        flexWrap: "wrap",
-        flexDirection: "row",
+        flexDirection: "column",
         alignItems: 'center',
         justifyContent: "center",
     },

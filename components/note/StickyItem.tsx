@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { TextInput, View, Text, StyleSheet, Pressable } from "react-native";
-
+import { TextInput, View, Text, StyleSheet, Pressable, Platform } from "react-native";
 
 
 
@@ -31,7 +30,7 @@ const StickyItem: React.FC<IStickyItem> = ({ title, content }) => {
                     </View>
                     {/* Title */}
                     <TextInput
-                        style={styles.titleInput}
+                        style={Platform.OS === 'web' ? styles.titleInputWeb : styles.titleInput}
                         multiline={false}
                         placeholder={'Title..'}
                         placeholderTextColor={'#808080'}
@@ -41,7 +40,7 @@ const StickyItem: React.FC<IStickyItem> = ({ title, content }) => {
                     />
                     {/* Note */}
                     <TextInput
-                        style={styles.noteInput}
+                        style={Platform.OS === 'web' ? styles.noteInputWeb : styles.noteInput}
                         multiline={true}
                         placeholder={'Set a note..'}
                         placeholderTextColor={'#808080'}
@@ -77,14 +76,22 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-    titleInput: {
+    titleInputWeb: {
         paddingTop: 10,
         fontSize: 16,
         fontFamily: "sans-serif",
         fontWeight: "bold",
         width: "100%",
         outlineStyle: 'none',
-    }, noteInput: {
+    },
+    titleInput: {
+        paddingTop: 10,
+        fontSize: 16,
+        fontFamily: "sans-serif",
+        fontWeight: "bold",
+        width: "100%",
+    },
+    noteInputWeb: {
         marginTop: 15,
         fontSize: 14,
         fontFamily: "sans-serif",
@@ -92,5 +99,12 @@ const styles = StyleSheet.create({
         height: "100%", // Make the note input full height
         outlineStyle: 'none',
         scrollbarWidth: 'none',
-    }
+    },
+    noteInput: {
+        marginTop: 15,
+        fontSize: 14,
+        fontFamily: "sans-serif",
+        width: "100%", // Make the note input full width
+        height: "100%", // Make the note input full height
+    },
 })
