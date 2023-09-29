@@ -2,9 +2,16 @@ import React, { useEffect, useState } from "react";
 import { StickyItem } from "../../components/note";
 import { FlatList, View, Text, StyleSheet, Pressable, Button, SafeAreaView } from "react-native";
 import * as Crypto from 'expo-crypto';
+import useGetDataAsync from "../../hooks/useGetDataAsync";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 type dummyType = {
+    id: string;
+    title?: string;
+    content?: string;
+}
+type StickyItemJSON = {
     id: string;
     title?: string;
     content?: string;
@@ -15,29 +22,55 @@ const NotePage = () => {
         { id: Crypto.randomUUID().slice(4) },
         { id: Crypto.randomUUID().slice(4) },
         { id: Crypto.randomUUID().slice(4) },
-        { id: Crypto.randomUUID().slice(4) },
     ]
 
     const [data, setData] = useState<dummyType[]>(dummy);
+    const [persist, setPersist] = useState<StickyItemJSON[]>([]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await useGetDataAsync();
+                console.log('from storage ', result)
+                if (result !== undefined && result !== null) {
+                    setPersist([result]);
+                } else {
+                    setPersist([]);
+                }
+            } catch (err) {
+                console.error(err);
+            };
+        };
+
+        fetchData();
+        return () => { };
+    }, []);
 
     const handleAddNote = () => {
-        const newNote: dummyType =
-            { id: Crypto.randomUUID().slice(4) }
-        setData([...data, newNote])
+        // const newNote: dummyType =
+        //     { id: Crypto.randomUUID().slice(4) }
+        let newNote: StickyItemJSON = {
+            id: new Date().getTime().toString(),
+            title: "",
+            content: "",
+        };
+        setPersist([...persist, newNote])
     }
 
     const handleDeleteAll = () => {
-        setData([]);
+        AsyncStorage.clear();
+        setPersist([]);
     }
 
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={data}
-                keyExtractor={item => item.id}
+                data={persist}
+                keyExtractor={(key, index) => { return key.id }}
                 renderItem={({ item }) => (
                     <StickyItem
+                        id={item.id}
+                        key={Crypto.randomUUID()}
                         title={item.title}
                         content={item.content}
                     />

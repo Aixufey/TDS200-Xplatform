@@ -13,7 +13,7 @@ import AppSpace from "../AppSpace";
 const Tab = createBottomTabNavigator();
 const Routes: React.FC = () => {
     return (
-        <Tab.Navigator initialRouteName="WeatherPage" screenOptions={{ headerShown: false }}>
+        <Tab.Navigator initialRouteName="NotePage" screenOptions={{ headerShown: false }}>
             <Tab.Screen name="WeatherPage" component={WeatherPage} />
             <Tab.Screen name="NotePage" component={NotePage} />
             <Tab.Screen name="CounterPage" component={CounterPage} />
