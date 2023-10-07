@@ -1,6 +1,8 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    // Because Express uses CommonJS modules with namespacing, we need to enable this
+    "esModuleInterop": true
   }
 }

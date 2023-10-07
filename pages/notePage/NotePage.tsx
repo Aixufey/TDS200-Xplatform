@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { StickyItem } from "../../components/note";
 import { FlatList, View, Text, StyleSheet, Pressable, Button, SafeAreaView } from "react-native";
 import * as Crypto from 'expo-crypto';
@@ -23,30 +23,54 @@ const NotePage = () => {
         { id: Crypto.randomUUID().slice(4) },
         { id: Crypto.randomUUID().slice(4) },
     ]
+    const [data, setData] = useState<StickyItemJSON[] | dummyType[]>(dummy);
 
-    const [data, setData] = useState<dummyType[]>(dummy);
-    const [persist, setPersist] = useState<StickyItemJSON[]>([]);
-
+    /**
+     * Data loads
+     */
     useEffect(() => {
-        const fetchData = async () => {
+        const loadData = async () => {
             try {
-                const result = await useGetDataAsync();
-                console.log('from storage ', result)
-                if (result !== undefined && result !== null) {
-                    setPersist([result]);
-                } else {
-                    setPersist([]);
-                }
+                const data = await AsyncStorage.getItem('note-data');
+                if (data !== null) {
+                    const parsed: StickyItemJSON[] = JSON.parse(data);
+                    setData(parsed);
+                } else setData(dummy);
             } catch (err) {
-                console.error(err);
-            };
+                console.error("Failed to load data", err);
+            }
         };
+        loadData();
+    }, [])
 
-        fetchData();
-        return () => { };
-    }, []);
+    /**
+     * Handler will be passed into StickyItem to extract states. The textinput are encapsulated.
+     * @param id - Will be passed when rendering in Flatlist
+     * @param title 
+     * @param content 
+     */
+    const handleEdit = async (id: string, title?: string, content?: string) => {
+        const updatedData = data.map(item => {
+            if (item.id === id) {
+                return {
+                    ...item,
+                    title: title,
+                    content: content
+                };
+            }
+            return item;
+        });
+        setData(updatedData);
+        await AsyncStorage.setItem('note-data', JSON.stringify(updatedData));
+    }
 
-    const handleAddNote = () => {
+    const handleDelete = async (id: string) => {
+        const updatedData = data.filter(item => item.id !== id);
+        setData(updatedData);
+        await AsyncStorage.setItem('note-data', JSON.stringify(updatedData));
+    }
+
+    const handleAddNote = async () => {
         // const newNote: dummyType =
         //     { id: Crypto.randomUUID().slice(4) }
         let newNote: StickyItemJSON = {
@@ -54,25 +78,33 @@ const NotePage = () => {
             title: "",
             content: "",
         };
-        setPersist([...persist, newNote])
+        const updatedData = [...data, newNote];
+        setData(updatedData);
+        try {
+            await AsyncStorage.setItem('note-data', JSON.stringify(updatedData));
+        } catch (err) {
+            console.error("Failed to add note", err);
+        }
     }
 
     const handleDeleteAll = () => {
         AsyncStorage.clear();
-        setPersist([]);
+        setData([]);
     }
+
 
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={persist}
+                data={data}
                 keyExtractor={(key, index) => { return key.id }}
                 renderItem={({ item }) => (
                     <StickyItem
                         id={item.id}
-                        key={Crypto.randomUUID()}
                         title={item.title}
                         content={item.content}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
                     />
                 )}
                 contentContainerStyle={styles.flatListContainer}
@@ -81,21 +113,16 @@ const NotePage = () => {
                 <Pressable
                     onPress={handleAddNote}
                     style={{
-                        maxWidth: 150,
-                        minWidth: 80,
-                        maxHeight: 60,
-                        backgroundColor: 'lightblue',
-                        borderRadius: 10,
+                        width: 100,
+                        height: 60,
+                        backgroundColor: 'green',
+                        borderRadius: 30,
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}
 
                 >
-                    <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 30,
-                        height: '100%',
-                    }}>
+                    <Text style={styles.buttonText}>
                         +
                     </Text>
                 </Pressable>
@@ -104,21 +131,16 @@ const NotePage = () => {
                 <Pressable
                     onPress={handleDeleteAll}
                     style={{
-                        maxWidth: 150,
-                        minWidth: 80,
-                        maxHeight: 60,
+                        width: 100,
+                        height: 60,
                         backgroundColor: 'red',
-                        borderRadius: 10,
+                        borderRadius: 30,
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}
 
                 >
-                    <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 30,
-                        height: '100%',
-                    }}>
+                    <Text style={styles.buttonText}>
                         Wipe
                     </Text>
                 </Pressable>
@@ -132,7 +154,7 @@ export default NotePage;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "linen"
+        backgroundColor: "linen",
     },
     flatListContainer: {
         gap: 10,
@@ -141,9 +163,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     btnContainer: {
-        paddingBottom: 10,
+        padding: 5,
         flexDirection: 'row',
-        justifyContent: 'center',
-
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: 'gold',
+    },
+    buttonText: {
+        fontWeight: 'bold',
+        fontSize: 30,
+        color: 'white',
     }
 });

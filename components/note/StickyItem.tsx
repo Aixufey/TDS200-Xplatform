@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, SetStateAction } from "react";
 import {
     TextInput,
     View,
@@ -21,74 +21,41 @@ interface IStickyItem {
     title?: string;
     content?: string;
     children?: React.ReactNode;
+    onEdit?: (id: string, title?: string, content?: string) => void;
+    onDelete?: (id: string) => void;
 }
-type StickyItemJSON = {
-    id: string;
-    title?: string;
-    content?: string;
-}
-const StickyItem: React.FC<IStickyItem> = ({ id, title, content }) => {
-    // const [title, setTitle] = useState<string>("")
-    // const [note, setNote] = useState<string>("")
-    const [nil, setClose] = useState<boolean>(true)
-    const [_title, _setTitle] = useState<string>("")
-    const [_content, _setContent] = useState<string>("")
-    const [json, setJSON] = useState<StickyItemJSON[]>([]);
 
-    useEffect(() => {
-
-        const getData = async () => {
-            try {
-                const jsonValue = await AsyncStorage.getItem('note-data');
-                if (jsonValue !== undefined && jsonValue !== null) {
-                    //console.log(JSON.parse(jsonValue));
-                    return JSON.parse(jsonValue);
-                }
-            } catch (err: unknown) {
-                console.error("Couldn't read data: ", err);
-            };
-        };
-        getData()
-            .then((data) => {
-                _setTitle(data?.title);
-                _setContent(data?.content);
-            })
-            .catch((err) => console.error(err));
-    }, []);
+const StickyItem: React.FC<IStickyItem> = ({ id, title, content, onEdit, onDelete }) => {
+    const [nil, setClose] = useState<boolean>(true);
+    const [_title, _setTitle] = useState<string>(title || "");
+    const [_content, _setContent] = useState<string>(content || "");
 
 
-    useEffect(() => {
-        console.log(json)
-        console.log(json.length)
-        const handleJSONUpdate = () => {
-            setJSON((prevData) => [
-                ...prevData,
-                {
-                    id: new Date().getTime().toString(),
-                    title: _title,
-                    content: _content
-                }
-            ]
-            );
-        };
-
-        const storeData = async (value: StickyItemJSON[]) => {
-            try {
-                await AsyncStorage.setItem('note-data', JSON.stringify(value));
-            } catch (err: unknown) {
-                console.error("Couldn't save data: ", err);
+    /**
+     * onEdit setter from NotePage we send the updated changes back.
+     */
+    const handleInputChange = (field: 'title' | 'content', e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+        const newValue = e.nativeEvent.text;
+        if (onEdit) {
+            if (field === 'title') {
+                _setTitle(newValue);
+                onEdit(id, newValue, content);
+            } else if (field === 'content') {
+                _setContent(newValue);
+                onEdit(id, title, newValue)
             }
-        };
+        }
+    }
 
-        handleJSONUpdate();
-
-        if (json !== null && json !== undefined) {
-            storeData(json);
-        };
-
-    }, [_title, _content]);
-
-
+    /**
+     * onDelete setter from NotePage
+     * @param id being sent from Flatlist
+     */
+    const handleDelete = (id: string) => {
+        if (onDelete) {
+            onDelete(id);
+        }
+    }
 
 
     return (
@@ -97,9 +64,12 @@ const StickyItem: React.FC<IStickyItem> = ({ id, title, content }) => {
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <Pressable
-                            onPress={() => setClose(false)}
+                            onPress={() => {
+                                handleDelete(id)
+                                setClose(false)
+                            }}
                         >
-                            <Text style={styles.close}>CLOSE</Text>
+                            <Text style={styles.close}>X</Text>
                         </Pressable>
                     </View>
                     {/* Title */}
@@ -108,8 +78,8 @@ const StickyItem: React.FC<IStickyItem> = ({ id, title, content }) => {
                         multiline={false}
                         placeholder={'Title..'}
                         placeholderTextColor={'#808080'}
-                        onChangeText={(txt) => title ?? txt}
-                        onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => _setTitle(e.nativeEvent.text)}
+                        // onChangeText={(txt) => title ?? txt}
+                        onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => handleInputChange('title', e)}
                         autoCorrect={false}
                         value={_title}
                     />
@@ -119,8 +89,8 @@ const StickyItem: React.FC<IStickyItem> = ({ id, title, content }) => {
                         multiline={true}
                         placeholder={'Set a note..'}
                         placeholderTextColor={'#808080'}
-                        onChangeText={(txt) => content ?? txt}
-                        onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => _setContent(e.nativeEvent.text)}
+                        // onChangeText={(txt) => content ?? txt}
+                        onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => handleInputChange('content', e)}
                         autoCorrect={false}
                         value={_content}
                     />
@@ -151,6 +121,8 @@ const styles = StyleSheet.create({
     }, close: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: '#D32F2F',
+        margin: 5
     },
     titleInputWeb: {
         paddingTop: 10,
