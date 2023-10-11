@@ -13,10 +13,10 @@ const WelcomeRoutes: React.FC = () => {
     const noHeader = {headerShown: false}
     return (
         /* independent is the parent */
-        <NavigationContainer independent={true}>
+        <NavigationContainer independent={false}>
             <Navigator>
                 <Screen name="Welcome" component={Welcome} options={noHeader}/>
-                <Screen name="HomeRoutes" component={HomeRoutes} />
+                <Screen name="HomeRoutes" component={HomeRoutes} options={noHeader}/>
             </Navigator>
         </NavigationContainer>
     );

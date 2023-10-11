@@ -35,9 +35,10 @@ const styles = StyleSheet.create({
         width: 140,
         height: 190,
         overflow: 'hidden',
+        gap: 16,
     },
     image: {
-        left: -55,
+        left: -35,
         top: -25,
     },
     label: {

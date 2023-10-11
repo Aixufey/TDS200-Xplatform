@@ -9,6 +9,8 @@ import {
   Roboto_400Regular
 } from "@expo-google-fonts/roboto";
 import Button from "./src/components/Button";
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+
 export default function App() {
   const logBtn = () => console.log('Clicked')
 

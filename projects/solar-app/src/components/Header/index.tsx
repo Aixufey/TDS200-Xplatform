@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
         width: "95%",
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 40,
     },
     helloBlock: {
         flexDirection: 'row',
