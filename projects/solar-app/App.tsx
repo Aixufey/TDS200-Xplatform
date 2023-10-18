@@ -10,6 +10,7 @@ import {
 } from "@expo-google-fonts/roboto";
 import Button from "./src/components/Button";
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import PlanetContextProvider from "./src/providers/PlanetContextProvider";
 
 export default function App() {
   const logBtn = () => console.log('Clicked')
@@ -23,7 +24,12 @@ export default function App() {
     return null
   }
 
-  return <WelcomeRoutes />
+  return (
+    <PlanetContextProvider>
+      <WelcomeRoutes />
+    </PlanetContextProvider>
+  )
+  
   /* return (
     <View style={{ flexGrow: 1, flexShrink: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Button title="Continue" Icon={() => <></>} onPress={logBtn}></Button>

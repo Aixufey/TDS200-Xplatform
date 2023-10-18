@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 import HomePage from '../pages/HomePage';
 import Assets from '../Assets';
 import SearchPage from '../pages/Search';
-
+import DetailsPage from '../pages/DetailPage';
 
 
 
@@ -17,7 +17,7 @@ const HomeRoutes: React.FC = () => {
             <Tab.Screen name="Start" component={HomePage} options={{ ...screenOptions, tabBarIcon: (({ focused }) => (<Assets.icons.Home style={iconStyle(focused)} />)) }} />
             <Tab.Screen name="Search" component={SearchPage} options={{ ...screenOptions, tabBarIcon: (({ focused }) => (<Assets.icons.Search style={iconStyle(focused)} />)) }} />
             <Tab.Screen name="Favorites" component={HomePage} options={{ ...screenOptions, tabBarIcon: (({ focused }) => (<Assets.icons.Save style={iconStyle(focused)} />)) }} />
-            <Tab.Screen name="DetailPage" component={HomePage} options={{ ...screenOptions, tabBarIcon: (({ focused }) => (<Assets.icons.Gallery style={iconStyle(focused)} />)) }} />
+            <Tab.Screen name="DetailsPage" component={DetailsPage} options={{ ...screenOptions, tabBarIcon: (({ focused }) => (<Assets.icons.Gallery style={iconStyle(focused)} />)) }} />
         </Tab.Navigator>
     )
 };

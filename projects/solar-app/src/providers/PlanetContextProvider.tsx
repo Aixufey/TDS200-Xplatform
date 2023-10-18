@@ -1,6 +1,6 @@
 import { SvgProps } from "react-native-svg";
 import Assets from "../Assets";
-import { createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 
 
@@ -36,7 +36,7 @@ const PlanetContext = createContext<PlanetContextType>({
 })
 export const usePlanetContext = () => useContext(PlanetContext);
 
-const PlanetContextProvider: React.FC<PlanetContextType> = ({children}) => {
+const PlanetContextProvider = ({children}: {children: ReactNode}) => {
     const [currentPlanet, setCurrentPlanet] = useState<Planet>(EARTH);
 
     // Encapsulate children not to change state
@@ -52,3 +52,5 @@ const PlanetContextProvider: React.FC<PlanetContextType> = ({children}) => {
     </PlanetContext.Provider>
     )
 }
+
+export default PlanetContextProvider;
