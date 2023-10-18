@@ -11,12 +11,13 @@ import { Colors } from "../../Styles/StyleGuide";
 
 
 type PlanetCardProps = {
-    label: string,
+    label: string;
     PlanetImage: React.FC<SvgProps>;
+    onPress?: (planetName: string) => void;
 }
-const PlanetCard: React.FC<PlanetCardProps> = ({ label, PlanetImage }) => {
+const PlanetCard: React.FC<PlanetCardProps> = ({ label, PlanetImage, onPress }) => {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={ () => onPress && onPress(label) }>
             <View style={styles.container}>
                 <PlanetImage style={styles.image} width={140} height={140} />
                 <View style={styles.footer}>
