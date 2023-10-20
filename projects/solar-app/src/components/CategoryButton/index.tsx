@@ -21,8 +21,8 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({label, Icon, color}) => 
     return (
         <TouchableOpacity>
             <Gradient style={styles.container}>
-                <Icon style={styles.icon} />
-                <Text style={styles.label}>{label}</Text>
+                <Icon className="mb-2"/>
+                <Text className="text-[#FFAA]">{label}</Text>
             </Gradient>
         </TouchableOpacity>
     )

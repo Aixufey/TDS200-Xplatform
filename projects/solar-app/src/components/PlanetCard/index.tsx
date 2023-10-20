@@ -37,10 +37,10 @@ const PlanetCard: React.FC<PlanetCardProps> = ({ label, PlanetImage, }) => {
 
     return (
         <TouchableOpacity onPress={ handlePlanetPress }>
-            <View style={styles.container}>
-                <PlanetImage style={styles.image} width={140} height={140} />
-                <View style={styles.footer}>
-                    <Text style={styles.label}>{label}</Text>
+            <View className="bg-zinc-800 w-140 h-190 overflow-hidden mr-5 rounded-md">
+                <PlanetImage width={140} height={140} className="right-6 bottom-5"/>
+                <View className="flex-row justify-between items-center bottom-2">
+                    <Text className="text-white ml-4">{label}</Text>
                     <Assets.icons.OrangeForward style={styles.icon} width={15} height={15} />
                 </View>
             </View>
