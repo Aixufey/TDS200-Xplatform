@@ -3,8 +3,8 @@ import * as MediaLibrary from 'expo-media-library';
 import React, { useEffect, useRef, useState } from 'react';
 import { GestureResponderEvent, Image, Pressable, PressableProps, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Design } from '../../styles';
-
-
+import { useFireBase } from '../../context/FireBaseContext';
+import { useResizeImage, useUploadImageToFireBase, useUriToBlob } from '../../hooks';
 
 
 
@@ -16,8 +16,9 @@ const CameraItem: React.FC = () => {
     const [hasLibraryPermission, setHasLibraryPermission] = useState<any>();
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const [photo, setPhoto] = useState<CameraCapturedPicture | undefined>(undefined);
-    const [focusDepth, setFocusDepth] = useState<number>(0);
     let cameraRef = useRef<Camera>(null);
+    const { firebase_storage, firebase_app } = useFireBase();
+
 
     useEffect(() => {
         (async () => {
@@ -30,7 +31,7 @@ const CameraItem: React.FC = () => {
         })();
 
         return () => {
-            console.log(photo);
+            // console.log(photo);
         }
     }, []);
 
@@ -41,21 +42,46 @@ const CameraItem: React.FC = () => {
     }
 
     const handlePressTakePicture = async () => {
-        if (cameraRef.current) {
-            let options = {
-                quality: 0.5,
-                base64: true,
-                exif: true,
-                skipProcessing: true,
-            };
-            const photo = await cameraRef.current.takePictureAsync(options);
-            const { uri, exif } = photo;
-            console.log(exif)
-            setPhoto(photo);
+        try {
+            if (cameraRef.current) {
+                let options = {
+                    quality: 0.5,
+                    base64: true,
+                    exif: true,
+                    skipProcessing: true,
+                };
+                const photo = await cameraRef.current.takePictureAsync(options);
+                const { uri, exif } = photo;
+                // console.log(exif)
+                // console.log(uri);
+                setPhoto(photo);
+
+                // Fetch blob from uri the normal way without reducing Image
+                // const response = await fetch(uri);
+                // const blob = await response.blob();
+
+                // Reduce image size for Firebase
+                const URI = await useResizeImage(uri);
+
+                // Convert to binary large object
+                let blob;
+                if (URI != undefined) {
+                    blob = await useUriToBlob(URI.uri)
+                        .then(resp => {
+                            return resp;
+                        })
+                    console.log(`Blob size: ${blob.size} - ${blob.type}`);
+                }
+
+                // Upload to Firebase
+                if (blob != undefined)
+                    await useUploadImageToFireBase(blob, exif);
+            }
+        } catch (err) {
+            console.log(err);
         }
+
     }
-
-
 
     return (
         <View style={styles.container}>

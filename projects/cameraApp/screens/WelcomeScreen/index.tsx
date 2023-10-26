@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useFireBase } from '../../context/FireBaseContext';
 import { Design } from '../../styles';
 import CameraScreen from '../CameraScreen';
-
+import { Query, QuerySnapshot, addDoc, collection, onSnapshot } from 'firebase/firestore';
 
 
 type ScreenProps = {
@@ -12,6 +13,10 @@ const WelcomeScreen: React.FC<ScreenProps> = ({ pageName }) => {
     // Navigate without library
     const [currentPage, setCurrentPage] = useState<string>('WelcomeScreen');
     const [willUnmount, setWillUnmount] = useState<boolean>(false);
+    const { firebase_app, firebase_db, firebase_storage } = useFireBase();
+    const [data, setData] = useState<unknown[]>([]);
+
+
 
     const handleMount = (unmount: boolean) => {
         // console.log('Children sent state back: ', unmount);
@@ -25,6 +30,32 @@ const WelcomeScreen: React.FC<ScreenProps> = ({ pageName }) => {
         // Reset state after navigating.
         setWillUnmount(false);
     }
+    
+    const addToFireBase = async () => {
+        const doc = addDoc(collection(firebase_db, 'pic'), { title: 'test' })
+        console.log(doc)
+    }
+    useEffect(() => {
+        // This demonstrate clean-up subscribe to changes
+        const picRef = collection(firebase_db, 'pic');
+        const subscriber = onSnapshot(picRef, {
+            next: (snapshot: QuerySnapshot) => {
+                const pics: any[] = [];
+                snapshot.forEach((doc) => {
+                    // console.log(doc.data());
+                    pics.push({
+                        id: doc.id,
+                        ...doc.data()
+                    })
+                }) 
+                setData(pics);
+            }
+        })
+        return () => {
+            subscriber();
+            console.log(data)
+        }
+    }, [])
 
     useEffect(() => {
         return console.log(currentPage)
@@ -46,14 +77,23 @@ const WelcomeScreen: React.FC<ScreenProps> = ({ pageName }) => {
             }
 
             {currentPage === 'WelcomeScreen' &&
-                <TouchableOpacity
-                    onPress={navigateCameraScreen}
-                    style={Design.buttonPrimary}
-                >
-                    <Text style={Design.textWhite}>
-                        Go to Camera Screen
-                    </Text>
-                </TouchableOpacity>
+                <>
+                    <TouchableOpacity
+                        onPress={navigateCameraScreen}
+                        style={Design.buttonPrimary}
+                    >
+                        <Text style={Design.textWhite}>
+                            Go to Camera Screen
+                        </Text>
+                    </TouchableOpacity>
+
+                    <Pressable
+                    onPress={() => addToFireBase()}
+                    
+                    >
+                        <Text>Add</Text>
+                    </Pressable>
+                </>
             }
         </View>
     )
