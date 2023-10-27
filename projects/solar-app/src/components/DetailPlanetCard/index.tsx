@@ -15,19 +15,31 @@ type DetailPlanetCardProps = {
 
 const DetailPlanetCard: React.FC<DetailPlanetCardProps> = ({ planetName, planetInfo, PlanetImage }) => {
     return (
-        <View style={styles.container}>
-            <PlanetImage width={200} height={200} style={styles.planet} />
+        <View className='w-[100%] font-poppins overflow-hidden h-auto rounded-lg my-3 flex-row'>
+            <PlanetImage width={200} height={200} className='bottom-8 right-8' />
 
-            <View style={styles.infos}>
-                <View style={styles.title}>
-                    <Text style={[Fonts.homeTitle(), styles.whiteText]}>
+            <View
+                // style={styles.infos}
+                className='left-[-30px] w-[40%] mr-[100px] ml-[5px] justify-center'
+            >
+                <View
+                    // style={styles.title}
+                    className='flex-row justify-between items-center'
+                >
+                    <Text
+                        // style={[Fonts.homeTitle(), styles.whiteText]}
+                        className='text-white font-sans'
+                    >
                         {planetName}
                     </Text>
                     <TouchableOpacity>
                         <Assets.icons.Save width={24} height={24} />
                     </TouchableOpacity>
                 </View>
-                <Text style={[styles.whiteText, styles.info]}>{planetInfo}</Text>
+                <Text
+                    // style={[styles.whiteText, styles.info]}
+                    className=''
+                >{planetInfo}</Text>
                 <TouchableOpacity style={styles.footer}>
                     <Text style={styles.whiteText}>Continue reading...</Text>
                     <Assets.icons.OrangeForward

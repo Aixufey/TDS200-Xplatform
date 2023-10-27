@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Input from "../../components/Input";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import { Colors } from "../../Styles/StyleGuide";
 import DetailPlanetCard from "../../components/DetailPlanetCard";
 import Assets from "../../Assets";
 import { SvgProps } from "react-native-svg";
@@ -35,7 +35,8 @@ const SearchPage: React.FC = () => {
 
 
     return (
-        <View style={styles.container}>
+        <View className="flex-1 mt-[50p] justify-center items-center bg-system-brand">
+            <Assets.images.BackgroundApp style={styles.bgImage} />
             <Input onTextChange={handleSearchChange} />
             <View style={styles.listContainer}>
 
@@ -63,6 +64,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: Colors.brandBackground,
+    },
+    bgImage: {
+        position: "absolute",
+        zIndex: 0,
     },
     listContainer: {
         width: "95%",

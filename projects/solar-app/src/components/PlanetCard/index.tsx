@@ -37,7 +37,7 @@ const PlanetCard: React.FC<PlanetCardProps> = ({ label, PlanetImage, }) => {
 
     return (
         <TouchableOpacity onPress={ handlePlanetPress }>
-            <View className="bg-zinc-800 w-140 h-190 overflow-hidden mr-5 rounded-md">
+            <View className="bg-brand w-140 h-190 overflow-hidden mr-5 rounded-md">
                 <PlanetImage width={140} height={140} className="right-6 bottom-5"/>
                 <View className="flex-row justify-between items-center bottom-2">
                     <Text className="text-white ml-4">{label}</Text>
