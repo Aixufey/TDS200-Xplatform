@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 import { Colors } from "../../Styles/StyleGuide";
 import CategoryButton from "../../components/CategoryButton";
 import PlanetCard from "../../components/PlanetCard";
-
+import { CATEGORIES, PLANETS } from "../../data";
 
 
 
@@ -15,95 +15,40 @@ import PlanetCard from "../../components/PlanetCard";
 
 const HomePage: React.FC = () => {
     return (
-        <View style={styles.container}>
-            <Assets.images.BackgroundApp style={styles.bgImage} />
-
-            <View style={styles.content}>
-                <Header />
-
-                <View style={styles.categories}>
-                    <Text style={styles.textWhite}>Categories</Text>
-                    <View style={styles.categoryList}>
+        <View className="flex-1 bg-system-brand">
+            <Assets.images.BackgroundApp className="absolute z-0" />
+            <Header
+                home
+            />
+            <View className="p-4">
+                <Text className="text-white">Categories</Text>
+                <View className="flex-row justify-between mt-3">
+                    {CATEGORIES.map((category, i) => (
                         <CategoryButton
-                            label="Planets"
-                            Icon={Assets.icons.Planets}
-                            color="blue"
+                            key={i}
+                            category={category}
                         />
-                        <CategoryButton
-                            label="Asteroids"
-                            Icon={Assets.icons.Asteroids}
-                            color="pink"
-                        />
-                        <CategoryButton
-                            label="Stars"
-                            Icon={Assets.icons.Stars}
-                            color="cyan"
-                        />
-                        <CategoryButton
-                            label="Galaxies"
-                            Icon={Assets.icons.Galaxies}
-                            color="yellow"
-                        />
-                    </View>
-                </View>
-
-                <View style={styles.planets}>
-                    <Text style={styles.textWhite}>Planets</Text>
-                    <ScrollView horizontal={true} decelerationRate={"fast"} style={styles.scrollView}>
-                        <PlanetCard
-                            label="Mercury"
-                            PlanetImage={Assets.images.Mercury}
-                        />
-                        <PlanetCard
-                            label="Venus"
-                            PlanetImage={Assets.images.Venus}
-                        />
-                        <PlanetCard
-                            label="Earth"
-                            PlanetImage={Assets.images.Earth}
-                        />
-                        <PlanetCard
-                            label="Mars"
-                            PlanetImage={Assets.images.Mars}
-                        />
-                        <PlanetCard
-                            label="Jupiter"
-                            PlanetImage={Assets.images.Jupiter}
-                        />
-                        <PlanetCard
-                            label="Saturn"
-                            PlanetImage={Assets.images.Saturn}
-                        />
-                    </ScrollView>
+                    ))
+                    }
                 </View>
             </View>
+
+            <Text className="text-white pl-4 mt-5">Planets</Text>
+            <ScrollView
+                horizontal={true}
+                decelerationRate={"fast"}
+                className="mt-3"
+            >
+                {PLANETS.map((planet, i) => (
+                    <PlanetCard
+                        key={i}
+                        planet={planet}
+                    />
+                ))
+                }
+            </ScrollView>
 
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.brandBackground,
-        // flexDirection: 'column',
-        // justifyContent: "flex-start",
-        // alignItems: "center",
-    },
-    categoryList: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        gap: 18,
-    },
-    planetsList: {
-        flexDirection: 'row',
-    },
-    bgImage: {
-        position: "absolute",
-        zIndex: 0,
-    },
-    textWhite: {
-        color: 'white'
-    },
-})
 export default HomePage;

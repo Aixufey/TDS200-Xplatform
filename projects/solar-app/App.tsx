@@ -1,19 +1,14 @@
 import React from "react";
 
-import { Text, View } from "react-native";
-import WelcomeRoutes from "./src/Routes";
-import Welcome from "./src/pages/Welcome";
 import {
-  useFonts,
+  Roboto_400Regular,
   Roboto_700Bold,
-  Roboto_400Regular
+  useFonts
 } from "@expo-google-fonts/roboto";
-import Button from "./src/components/Button";
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import WelcomeRoutes from "./src/Routes";
 import PlanetContextProvider from "./src/providers/PlanetContextProvider";
 
 export default function App() {
-  const logBtn = () => console.log('Clicked')
 
   const [fontsLoaded] = useFonts({
     Roboto_700Bold,
@@ -28,13 +23,6 @@ export default function App() {
     <PlanetContextProvider>
       <WelcomeRoutes />
     </PlanetContextProvider>
-  )
-  
-  /* return (
-    <View style={{ flexGrow: 1, flexShrink: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button title="Continue" Icon={() => <></>} onPress={logBtn}></Button>
-    </View>
-  ) */
-
+  );
 }
 

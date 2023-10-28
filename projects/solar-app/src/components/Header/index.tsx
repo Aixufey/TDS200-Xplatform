@@ -1,29 +1,51 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { Assets } from "../../Assets";
 import { Fonts } from "../../Styles/StyleGuide";
+import useOwnNavigation from "../../hooks/useOwnNavigation";
 
 
 
 
 
+interface IHeaderProps {
+    home?: boolean;
+    handleBack?: () => void;
+}
+const Header: React.FC<IHeaderProps> = ({ home, handleBack }) => {
+    const { goBack } = useOwnNavigation();
 
-const Header: React.FC = () => {
+    const handleBackPress = () => {
+        if (handleBack)
+            return handleBack();
+        goBack();
+    }
+
     const handleSettingsPress = () => {
         console.log("settings")
     };
 
     return (
-        <View style={styles.container}>
+        <View className="flex-row justify-between items-center w-full h-1/5 p-5">
+            {home ?
+                (
+                    <View>
+                        <View className="flex-row">
+                            <Text className="text-white font-bold text-3xl">
+                                Well met,
+                            </Text>
+                            <Text className="text-[#FF2184] font-bold text-3xl"> friend</Text>
+                            <Text className="text-white font-bold text-3xl">!</Text>
+                        </View>
+                        <Text className="text-white">What are you going to learn today?</Text>
+                    </View>
+                ) :
+                (
+                    <TouchableOpacity onPress={handleBackPress}>
+                        <Assets.icons.Back />
+                    </TouchableOpacity>
+                )
 
-            <View>
-                <View style={styles.helloBlock}>
-                    <Text style={[Fonts.homeTitle(), styles.textWhite]}>
-                        Well met,
-                    </Text>
-                    <Text style={[Fonts.homeTitle(), styles.textPink]}>friend</Text>
-                </View>
-                <Text style={styles.textWhite}>What are you going to learn today?</Text>
-            </View>
+            }
 
             <View>
                 <TouchableOpacity onPress={handleSettingsPress}>

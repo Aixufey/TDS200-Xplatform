@@ -10,7 +10,7 @@ import useOwnNavigation from "../../hooks/useOwnNavigation";
 
 
 const Welcome: React.FC = () => {
-    const { goBack,navigate} = useOwnNavigation();
+    const { goBack, navigate } = useOwnNavigation();
 
     const handleContinueClick = () => {
         navigate("HomeRoutes");
@@ -18,42 +18,22 @@ const Welcome: React.FC = () => {
 
 
     return (
-        <View style={styles.container}>
-            <Assets.images.BackgroundApp style={styles.bgImage} />
-            <Text style={[styles.welcome, Fonts.paragraph()]}>Welcome</Text>
-            <Text style={[styles.title, Fonts.homeTitle()]}>Lets's journey through our solar system</Text>
-
-            <Text style={[styles.title, Fonts.paragraph(), styles.buttonMargin]}>Press the button below to embark</Text>
-            <Button title="Continue" Icon={Assets.icons.Forward} onPress={handleContinueClick} />
+        <View className="justify-center items-center bg-system-brand flex-1">
+            <Assets.images.BackgroundApp className="absolute z-0" />
+            <Text className="text-white text-center text-lg opacity-70">Welcome</Text>
+            <Text className="text-white content-center w-10/12 text-center text-3xl font-bold">
+                Lets's journey through our solar system
+            </Text>
+            <Text className="text-white mt-[50%] text-md">
+                Press the button below to embark
+            </Text>
+            <Button
+                title="Continue"
+                Icon={Assets.icons.Forward}
+                onPress={handleContinueClick}
+            />
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: Colors.brandBackground,
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    bgImage: {
-        position: "absolute",
-        zIndex: 0,
-    },
-    welcome: {
-        color: "white",
-        opacity: 0.65,
-    },
-    title: {
-        color: "white",
-        maxWidth: "85%",
-        textAlign: "center",
-    },
-    buttonMargin: {
-        marginTop: "50%"
-    }
-
-})
 
 export default Welcome;

@@ -1,6 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Text, TouchableOpacity } from "react-native";
 import { SvgProps } from "react-native-svg";
 import { Gradients } from "../../Styles/StyleGuide";
+import { Category } from "../../data";
 
 
 
@@ -9,40 +10,26 @@ import { Gradients } from "../../Styles/StyleGuide";
 
 
 type CategoryButtonProps = {
-    label: string,
-    Icon: React.FC<SvgProps>;
-    color: "blue" | "pink" | "cyan" | "yellow",
+    label?: string,
+    Icon?: React.FC<SvgProps>;
+    color?: "blue" | "pink" | "cyan" | "yellow",
 };
 
-const CategoryButton: React.FC<CategoryButtonProps> = ({label, Icon, color}) => {
+interface ICategoryButtonProps {
+    category: Category;
+}
 
-    const Gradient = Gradients[color];
+const CategoryButton: React.FC<ICategoryButtonProps> = ({ category }) => {
+    const { Icon, gradient, label } = category;
+    const GradientColor = Gradients[gradient];
 
     return (
         <TouchableOpacity>
-            <Gradient style={styles.container}>
-                <Icon className="mb-2"/>
-                <Text className="text-[#FFAA]">{label}</Text>
-            </Gradient>
+            <GradientColor className="justify-center items-center w-[75px] h-[75px] rounded-md">
+                <Icon className="mb-2" />
+                <Text className="text-[#FFAA] mt-2">{label}</Text>
+            </GradientColor>
         </TouchableOpacity>
     )
 }
-const styles = StyleSheet.create({
-    container: {
-        borderRadius: 8,
-        width: 75,
-        height: 75,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    icon: {
-        marginBottom: 8,
-    },
-    label: {
-        color: 'white'
-    },
-    textWhite: {
-        color: 'white'
-    }
-})
 export default CategoryButton;
