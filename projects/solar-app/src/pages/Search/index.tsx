@@ -34,6 +34,7 @@ const SearchPage: React.FC = () => {
                             <DetailPlanetCard
                                 key={i}
                                 planet={planet}
+                                
                             />
                         ))
                     }

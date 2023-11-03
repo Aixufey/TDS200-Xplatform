@@ -2,37 +2,37 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SvgProps } from 'react-native-svg';
 import Assets from '../../Assets';
 import { Colors, Fonts } from '../../Styles/StyleGuide';
-import { Planet } from '../../data';
-import { usePlanetContext } from '../../providers/PlanetContextProvider';
-import useOwnNavigation from '../../hooks/useOwnNavigation';
+import { Planet, retrieveFavoritesFromStorage } from '../../data';
+import useOwnNavigation from "../../hooks/useOwnNavigation";
+import { usePlanetContext } from "../../providers/PlanetContextProvider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from 'react';
 
 
-
-
-
+interface IDetailPlanetCardProps {
+    planet: Planet;
+}
 type DetailPlanetCardProps = {
     planetName: string
     planetInfo: string
     PlanetImage: React.FC<SvgProps>
 }
-interface IDetailPlanetCardProps {
-    planet: Planet;
-}
+
 const DetailPlanetCard: React.FC<IDetailPlanetCardProps> = ({ planet }) => {
-    const { Image, description, name } = planet;
-    const { navigate } = useOwnNavigation();
+    const { name, description, Image } = planet;
     const {
         setCurrentPlanet,
-        favorites,
         addToFavorites,
-        removeFromFavorites
+        removeFromFavorites,
+        favorites,
     } = usePlanetContext();
-
+    const { navigate } = useOwnNavigation();
     const isFavorite = favorites.includes(name);
+
     const handleFavoriteSave = () => {
         if (isFavorite) {
             removeFromFavorites(name);
-            return
+            return;
         }
         addToFavorites(name);
     };
@@ -41,39 +41,42 @@ const DetailPlanetCard: React.FC<IDetailPlanetCardProps> = ({ planet }) => {
         setCurrentPlanet(planet);
         navigate("DetailsPage");
     };
-
     return (
-        <View className='w-[100%] border-[1px] border-[#21A] overflow-hidden h-auto rounded-lg my-3 flex-row'>
-            <Image width={200} height={200} className='bottom-8 right-10' />
+        <View className='w-[100%] overflow-hidden h-auto rounded-lg my-3 flex-row'>
+            <Image width={200} height={200} className='bottom-8 right-8' />
 
-            <View className='left-[-20px] w-[45%] mr-[100px] ml-[5px] justify-center '>
-                <View className='flex-row justify-between items-center'>
-                    <Text className='text-white text-2xl font-bold mb-2'>
+            <View
+                // style={styles.infos}
+                className='left-[-30px] w-[40%] mr-[100px] ml-[5px] justify-center'
+            >
+                <View
+                    // style={styles.title}
+                    className='flex-row justify-between items-center'
+                >
+                    <Text
+                        // style={[Fonts.homeTitle(), styles.whiteText]}
+                        className='text-white'
+                    >
                         {name}
                     </Text>
-                    <TouchableOpacity
-                        onPress={handleFavoriteSave}
-                        className='left-3'
-                    >
+                    <TouchableOpacity onPress={handleFavoriteSave}>
                         {isFavorite ? (
-                            <Assets.icons.Save fill={'white'} />
+                            <Assets.icons.Saved fill="white" />
                         ) : (
                             <Assets.icons.Save />
                         )}
                     </TouchableOpacity>
                 </View>
-                <Text className='text-white opacity-70'>
-                    {description}
-                </Text>
-                <TouchableOpacity
-                    className='flex-row mt-5 item-center'
-                    onPress={handleContinueReading}
-                >
-                    <Text className='mr-3 text-white'>Continue reading...</Text>
+                <Text
+                    // style={[styles.whiteText, styles.info]}
+                    className=''
+                >{description}</Text>
+                <TouchableOpacity style={styles.footer} onPress={handleContinueReading}>
+                    <Text style={styles.whiteText}>Continue reading...</Text>
                     <Assets.icons.OrangeForward
-                        width={14}
-                        height={14}
-                        className='ml-2'
+                        width={16}
+                        height={16}
+                        style={styles.arrow}
                     />
                 </TouchableOpacity>
             </View>
@@ -81,3 +84,52 @@ const DetailPlanetCard: React.FC<IDetailPlanetCardProps> = ({ planet }) => {
     )
 }
 export default DetailPlanetCard;
+
+const styles = StyleSheet.create({
+    container: {
+        width: "95%",
+        backgroundColor: Colors.brandBackground,
+        height: "auto",
+        borderRadius: 10,
+        overflow: "hidden",
+        marginVertical: 10,
+        flexDirection: "row",
+        borderWidth: 5,
+        borderColor: "red",
+    },
+    planet: {
+        top: -45,
+        left: -35,
+    },
+    infos: {
+        left: -30,
+        width: "40%",
+        marginRight: 100,
+        marginLeft: 5,
+        justifyContent: "center",
+        borderWidth: 1,
+        borderColor: "red",
+    },
+    info: {
+        opacity: 0.6,
+        height: 100,
+    },
+    title: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    whiteText: {
+        color: "white",
+    },
+
+    arrow: {
+        marginLeft: 5,
+    },
+    footer: {
+        flexDirection: "row",
+        marginTop: 10,
+        alignItems: "center",
+    },
+
+})
